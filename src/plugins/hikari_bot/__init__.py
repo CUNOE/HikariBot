@@ -1,7 +1,7 @@
 import traceback
 import nonebot.adapters.onebot.v11
 from loguru import logger
-from nonebot import on_command, on_message, get_driver
+from nonebot import on_command, on_message, on_fullmatch, get_driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
@@ -13,6 +13,7 @@ from .utils import DailyNumberLimiter,FreqLimiter,get_bot,download
 from .data_source import nb2_file
 from .command_select import select_command
 from .mqtt import mqtt_run
+from .game.pupu import get_pupu_msg
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -31,13 +32,14 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.5'
+__version__ = '0.3.5.4'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
 bot = on_command("wws", block=False, aliases={"WWS"},priority=5)
-bot_checkversion = on_command("wws 检查更新",priority=5,block=True)
-bot_update = on_command("wws 更新Hikari",priority=5,block=True,permission=SUPERUSER)
+bot_pupu = on_fullmatch("噗噗", block=False, priority=5)
+bot_checkversion = on_command("wws 检查更新",priority=5,block=False)
+bot_update = on_command("wws 更新Hikari",priority=5,block=False,permission=SUPERUSER)
 bot_listen = on_message(priority=5,block=False)
 driver = get_driver()
 
@@ -156,8 +158,9 @@ async def update_Hikari(ev:MessageEvent,bot:Bot):
                 each['url'],
                 f"{driver.config.nb2_path}\{each['name']}"
                 ) for each in nb2_file])
-        os.system(f'python -m pip install --upgrade hikari-bot')
-        os.system(f'python -m pip install --upgrade nonebot-plugin-gocqhttp')
+        logger.info(f"当前解释器路径{sys.executable}")
+        os.system(f'{sys.executable} -m pip install --upgrade hikari-bot')
+        os.system(f'{sys.executable} -m pip install --upgrade nonebot-plugin-gocqhttp')
         Reloader.reload(delay=1)
     except RuntimeError:
         if str(platform.system()).lower() == 'linux':
@@ -258,3 +261,20 @@ scheduler.add_job(
     "cron",
     hour = 4
 )
+
+
+
+@bot_pupu.handle()
+async def send_pupu_msg(ev:MessageEvent,bot:Bot):
+    try:
+        if driver.config.pupu and isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:
+            msg = await get_pupu_msg()
+            await bot.send(ev,msg)
+    except ActionFailed:
+        logger.warning(traceback.format_exc())
+        try:
+            await bot.send(ev,'噗噗寄了>_<可能被风控了QAQ')
+        except Exception:
+            pass
+        return
+    

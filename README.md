@@ -215,6 +215,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 2. 在bot的bot.py中加入
     ```
     nonebot.load_plugin('hikari_bot')
+    nonebot.load_plugin('nonebot_plugin_htmlrender')
     ```
 3. 在环境文件中加入以下配置项
     ```
@@ -230,6 +231,9 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     check_cache = true              #是否开启缓存上报,可降低高峰期延迟,如果错误日志中频繁报错上报url:XXXXXXXX,请关闭此项或配置代理
     proxy_on = false                #是否启用代理
     proxy = http://localhost:7890   #代理地址，如果上面选项开启，这边替换为你本地的
+    ocr_on = true                   #是否开启ocr(识图指令)
+    ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
+    ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
@@ -260,6 +264,8 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+### 22-10-29    v0.3.5.5  添加测试功能OCR，支持图片指令
+### 22-10-27    v0.3.5.4  修复一键更新指令bug
 ### 22-10-26    v0.3.5.3  添加缓存上报机制，修复噗噗误触发的bug
 ### 22-10-25    v0.3.5.2  新增噗噗
 ### 22-07-24    v0.3.5  适配nontbo2 v2.0.0rc1  
@@ -496,6 +502,20 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
   ```
   
   6. （可选，若不正常可尝试）重启Hikari。
+
+### 首次启动时plugin-gocqhttp的startup方法报错(traceback中一般还有ssl的错误)
+
+1. 下载 go-cqhttp
+
+    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases
+
+    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
+
+2. 重命名为`go-cqhttp.exe`并放入`HikariBot\accounts\binary`文件夹下
+
+3. 重新启动Hikari
+
+
 
 ## 感谢以下项目的支持（排名不分先后）
 

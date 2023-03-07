@@ -464,6 +464,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     USE_PLUGIN_GO_CQHTTP = false
     ```
 5. 在文件夹下打开终端，输入`python bot.py`启动bot
+    - 一键包双击`启动.bat`即可
 
 
 ### 出现ZoneInfoNotFoundError报错
@@ -525,13 +526,21 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 3. 重新启动Hikari
 
+## 贡献代码
 
+请向dev分支提交PR
 
-## 感谢以下项目的支持（排名不分先后）
+## 鸣谢
 
-[Nonebot2](https://github.com/nonebot/nonebot2)
-[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
-[战舰世界API平台](https://wows.shinoaki.com/)
+感谢以下开发者及项目做出的贡献与支持
+
+<a href="https://github.com//benx1n/HikariBot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=benx1n/HikariBot" />
+</a>
+
+[Nonebot2](https://github.com/nonebot/nonebot2)  
+[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)  
+[战舰世界API平台](https://wows.shinoaki.com/)  
 
 ## 开源相关
 MIT

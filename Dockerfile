@@ -1,26 +1,31 @@
-FROM ubuntu:20.04
+FROM python:3.10-slim
 
-WORKDIR /root
+WORKDIR /app
 
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-RUN echo 'Asia/Shanghai' >/etc/timezone
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Asia/Shanghai
 
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get clean && \
-    apt-get update -y && \
-    apt-get install -y python3.8 python3-pip python3.8-dev git wget
-    
+RUN apt update \
+    && apt install -y tzdata \
+    && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo ${TZ} > /etc/timezone \
+    && dpkg-reconfigure --frontend noninteractive tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . .
+
+RUN apt-get update -y && \
+    apt-get install -y python3-pip procps git
+
 RUN apt-get install -y locales locales-all fonts-noto libnss3-dev libxss1 libasound2 \
                        libxrandr2 libatk1.0-0 libgtk-3-0 libgbm-dev libxshmfence1 \
                        libdbus-1-dev libdbus-glib-1-dev
 
-RUN git clone https://github.com/CUNOE/HikariBot.git /root/HikariBot
-
 RUN pip install nb-cli hikari-bot nonebot-plugin-apscheduler && \
     pip install nonebot-plugin-gocqhttp nonebot-plugin-reboot
-    
+
 RUN playwright install chromium && \
     playwright install-deps
 
-WORKDIR /root/HikariBot
-CMD ["python3", "bot.py"]
+WORKDIR /app
+CMD ["python", "bot.py"]

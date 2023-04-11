@@ -27,5 +27,4 @@ RUN pip install nb-cli hikari-bot nonebot-plugin-apscheduler && \
 RUN playwright install chromium && \
     playwright install-deps
 
-WORKDIR /app
 CMD ["python", "bot.py"]

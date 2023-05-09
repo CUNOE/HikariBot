@@ -12,13 +12,17 @@
 战舰世界水表BOT
 <!-- prettier-ignore-end -->
 
-
-
 <p align="center">
   <a href="https://pypi.python.org/pypi/hikari-bot">
     <img src="https://img.shields.io/pypi/v/hikari-bot" alt="pypi">
   </a>
   <img src="https://img.shields.io/badge/python-3.8.0+-blue" alt="python">
+  <a href="http://hits.dwyl.com/benx1n/HikariBot">
+    <img src="https://hits.dwyl.com/benx1n/HikariBot.svg?style=flat-square" alt="hits">
+  </a>
+  <a href="https://github.com/benx1n/HikariBot/stargazers"><img src="https://img.shields.io/github/stars/benx1n/HikariBot" alt="GitHub stars"style="max-width: 100%;">
+  </a>
+  <br/>
   <a href="https://jq.qq.com/?_wv=1027&k=S2WcTKi5">
     <img src="https://img.shields.io/badge/QQ%E7%BE%A4-967546463-orange?style=flat-square" alt="QQ Chat Group">
   </a>
@@ -236,6 +240,7 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
     ocr_on = true                   #是否开启ocr(识图指令)
     ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
     ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
+    http2 = true                    #是否开启http2，默认开启，如果有问题请设置为false
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
@@ -266,6 +271,10 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+
+### 23-05-07    v0.3.9
+- [+]重构代码
+- [#]替换默认OCR接口
 
 ### 23-04-07    v0.3.8
 - [+]新增国服封号记录查询，指令wws ban/wws 封号记录
